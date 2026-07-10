@@ -1,1 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>うなぎの迷路（ラビリンス）1.0</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#9ed8ff}
+canvas{display:block}
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<script>
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+
+const TILE=32;
+const maze=[
+"####################",
+"#S     #          G#",
+"# ### ### ####### ##",
+"#   #     #       ##",
+"### ##### # ##### ##",
+"#       # #     # ##",
+"# ##### # ##### # ##",
+"#     #         # ##",
+"####################"
+];
+
+const eel={x:0,y:0,angle:0,speed:2.5,radius:10};
+const target={x:0,y:0};
+const goal={x:0,y:0,r:12};
+const walls=[];
+let ox=0,oy=0;
+
 
