@@ -11,6 +11,10 @@ export const CONFIG = {
     EEL_SPEED: 2.5,
     EEL_RADIUS: 8,
 
+    // ニョロニョロ
+    BODY_RADIUS: 7,
+    BODY_DELAY: 12,
+
     // ゴール
     GOAL_RADIUS: 10,
 
