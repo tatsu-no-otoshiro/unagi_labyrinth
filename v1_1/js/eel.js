@@ -14,6 +14,13 @@ export class Eel {
         this.speed = CONFIG.EEL_SPEED;
         this.radius = CONFIG.EEL_RADIUS;
 
+        this.history = [];
+
+        this.body = {
+            x: 0,
+            y: 0
+        };
+
     }
 
     reset() {
@@ -24,6 +31,11 @@ export class Eel {
         this.y = start.y;
 
         this.angle = 0;
+
+        this.history = [];
+
+        this.body.x = this.x;
+        this.body.y = this.y;
 
     }
 
@@ -56,6 +68,26 @@ export class Eel {
 
         if (this.hitWall()) {
             this.y = oldY;
+        }
+
+        this.history.unshift({
+            x: this.x,
+            y: this.y
+        });
+
+        const delay = CONFIG.BODY_DELAY;
+
+        if (this.history.length > delay) {
+
+            this.body.x = this.history[delay].x;
+            this.body.y = this.history[delay].y;
+
+        }
+
+        if (this.history.length > delay + 50) {
+
+            this.history.pop();
+
         }
 
     }
