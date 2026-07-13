@@ -12,8 +12,9 @@ export const CONFIG = {
     EEL_RADIUS: 8,
 
     // ニョロニョロ
+    BODY_COUNT: 12,
     BODY_RADIUS: 7,
-    BODY_DELAY: 12,
+    BODY_DELAY: 4,
 
     // ゴール
     GOAL_RADIUS: 10,
