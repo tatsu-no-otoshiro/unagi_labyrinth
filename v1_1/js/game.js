@@ -26,6 +26,7 @@ export class Game {
         this.resize();
 
         this.eel.reset();
+        this.input.reset();
 
         this.loop();
 
@@ -39,6 +40,7 @@ export class Game {
         this.maze.build();
 
         this.eel.reset();
+        this.input.reset();
 
     }
 
@@ -49,7 +51,7 @@ export class Game {
     }
 
     draw() {
-        
+
         this.renderer.draw();
 
     }
