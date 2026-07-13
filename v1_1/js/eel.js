@@ -45,19 +45,6 @@ export class Eel {
 
         }
 
-        // 履歴も下方向へ初期化
-        const maxHistory =
-            CONFIG.BODY_COUNT * CONFIG.BODY_DELAY + 10;
-
-        for (let i = maxHistory; i >= 0; i--) {
-
-            this.history.push({
-                x: this.x,
-                y: this.y + i * this.speed
-            });
-
-        }
-
     }
 
     update() {
