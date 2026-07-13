@@ -1,3 +1,5 @@
+import { CONFIG } from "./config.js";
+
 export class Maze {
 
     constructor(game) {
@@ -22,7 +24,7 @@ export class Maze {
             "###############"
         ];
 
-        this.tileSize = 32;
+        this.tileSize = CONFIG.TILE_SIZE_MIN;
         this.offsetX = 0;
         this.offsetY = 0;
 
@@ -36,7 +38,7 @@ export class Maze {
         this.goal = {
             x: 0,
             y: 0,
-            radius: 10
+            radius: CONFIG.GOAL_RADIUS
         };
 
     }
@@ -49,17 +51,20 @@ export class Maze {
 
         this.tileSize = Math.floor(
             Math.min(
-                (canvas.width - 40) / 15,
-                (canvas.height - 40) / 15
+                (canvas.width - CONFIG.MAP_MARGIN) / CONFIG.MAP_SIZE,
+                (canvas.height - CONFIG.MAP_MARGIN) / CONFIG.MAP_SIZE
             )
         );
 
-        this.offsetX = (canvas.width - this.tileSize * 15) / 2;
-        this.offsetY = (canvas.height - this.tileSize * 15) / 2;
+        this.offsetX =
+            (canvas.width - this.tileSize * CONFIG.MAP_SIZE) / 2;
 
-        for (let y = 0; y < 15; y++) {
+        this.offsetY =
+            (canvas.height - this.tileSize * CONFIG.MAP_SIZE) / 2;
 
-            for (let x = 0; x < 15; x++) {
+        for (let y = 0; y < CONFIG.MAP_SIZE; y++) {
+
+            for (let x = 0; x < CONFIG.MAP_SIZE; x++) {
 
                 const ch = this.map[y][x];
 
