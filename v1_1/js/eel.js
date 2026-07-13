@@ -31,31 +31,29 @@ export class Eel {
 
         this.history = [];
 
-        this.history = [];
-
         this.body = [];
 
-        // 胴体を初期配置
         const spacing = CONFIG.BODY_DELAY * this.speed;
 
+        // 胴体を下方向へ並べる
         for (let i = 0; i < CONFIG.BODY_COUNT; i++) {
 
             this.body.push({
-                x: this.x - (i + 1) * spacing,
-                y: this.y
+                x: this.x,
+                y: this.y + (i + 1) * spacing
             });
 
         }
 
-        // 履歴を初期化
+        // 履歴も下方向へ初期化
         const maxHistory =
             CONFIG.BODY_COUNT * CONFIG.BODY_DELAY + 10;
 
         for (let i = maxHistory; i >= 0; i--) {
 
             this.history.push({
-                x: this.x - i * this.speed,
-                y: this.y
+                x: this.x,
+                y: this.y + i * this.speed
             });
 
         }
@@ -93,37 +91,33 @@ export class Eel {
             this.y = oldY;
         }
 
+        this.history.unshift({
+            x: this.x,
+            y: this.y
+        });
+
         for (let i = 0; i < this.body.length; i++) {
 
-            let target;
+            const index =
+                (i + 1) * CONFIG.BODY_DELAY;
 
-            if (i === 0) {
-
-                target = this;
-
-            } else {
-
-                target = this.body[i - 1];
-
-            }
-
-            const dx = target.x - this.body[i].x;
-            const dy = target.y - this.body[i].y;
-
-            const dist = Math.hypot(dx, dy);
-
-            const spacing = CONFIG.BODY_RADIUS * 1.8;
-
-            if (dist > spacing) {
+            if (this.history.length > index) {
 
                 this.body[i].x =
-                    target.x - dx / dist * spacing;
+                    this.history[index].x;
 
                 this.body[i].y =
-                    target.y - dy / dist * spacing;
+                    this.history[index].y;
 
             }
 
+        }
+
+        const maxHistory =
+            CONFIG.BODY_COUNT * CONFIG.BODY_DELAY + 10;
+
+        if (this.history.length > maxHistory) {
+            this.history.pop();
         }
 
     }
