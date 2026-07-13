@@ -16,10 +16,7 @@ export class Eel {
 
         this.history = [];
 
-        this.body = {
-            x: 0,
-            y: 0
-        };
+        this.body = [];
 
     }
 
@@ -34,8 +31,16 @@ export class Eel {
 
         this.history = [];
 
-        this.body.x = this.x;
-        this.body.y = this.y;
+        this.body = [];
+
+        for (let i = 0; i < CONFIG.BODY_COUNT; i++) {
+
+            this.body.push({
+                x: this.x,
+                y: this.y
+            });
+
+        }
 
     }
 
@@ -75,19 +80,28 @@ export class Eel {
             y: this.y
         });
 
-        const delay = CONFIG.BODY_DELAY;
+        for (let i = 0; i < this.body.length; i++) {
 
-        if (this.history.length > delay) {
+            const index =
+                (i + 1) * CONFIG.BODY_DELAY;
 
-            this.body.x = this.history[delay].x;
-            this.body.y = this.history[delay].y;
+            if (this.history.length > index) {
+
+                this.body[i].x =
+                    this.history[index].x;
+
+                this.body[i].y =
+                    this.history[index].y;
+
+            }
 
         }
 
-        if (this.history.length > delay + 50) {
+        const maxHistory =
+            CONFIG.BODY_COUNT * CONFIG.BODY_DELAY + 10;
 
+        if (this.history.length > maxHistory) {
             this.history.pop();
-
         }
 
     }
