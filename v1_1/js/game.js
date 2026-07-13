@@ -46,10 +46,28 @@ export class Game {
 
     update() {
 
-        // 次工程で実装
+        this.eel.update();
+
+        const goal = this.maze.goal;
+        const eel = this.eel;
+
+        if (
+            Math.hypot(
+                goal.x - eel.x,
+                goal.y - eel.y
+            ) < goal.radius + eel.radius
+        ) {
+
+            alert("クリア");
+
+            this.maze.build();
+            this.eel.reset();
+            this.input.reset();
+
+        }
 
     }
-
+   
     draw() {
 
         this.renderer.draw();
