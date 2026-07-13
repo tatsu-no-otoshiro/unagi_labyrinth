@@ -1,3 +1,5 @@
+import { CONFIG } from "./config.js";
+
 export class Renderer {
 
     constructor(game) {
@@ -17,7 +19,7 @@ export class Renderer {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // 壁
-        ctx.fillStyle = "#355";
+        ctx.fillStyle = CONFIG.COLORS.WALL;
 
         for (const wall of maze.walls) {
 
@@ -31,7 +33,7 @@ export class Renderer {
         }
 
         // ゴール
-        ctx.fillStyle = "gold";
+        ctx.fillStyle = CONFIG.COLORS.GOAL;
 
         ctx.beginPath();
 
@@ -52,7 +54,7 @@ export class Renderer {
 
         ctx.rotate(eel.angle);
 
-        ctx.fillStyle = "#643";
+        ctx.fillStyle = CONFIG.COLORS.EEL;
 
         ctx.beginPath();
 
