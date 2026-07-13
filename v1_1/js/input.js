@@ -1,6 +1,8 @@
 export class Input {
 
-    constructor(){
+    constructor(game) {
+
+        this.game = game;
 
     }
 
