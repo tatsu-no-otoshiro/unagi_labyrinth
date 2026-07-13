@@ -39,8 +39,8 @@ export class Eel {
         for (let i = 0; i < CONFIG.BODY_COUNT; i++) {
 
             this.body.push({
-                x: this.x - (i + 1) * spacing,
-                y: this.y
+                x: this.x,
+                y: this.y + (i + 1) * spacing
             });
 
         }
@@ -52,8 +52,8 @@ export class Eel {
         for (let i = maxHistory; i >= 0; i--) {
 
             this.history.push({
-                x: this.x - i * this.speed,
-                y: this.y
+                x: this.x,
+                y: this.y + i * this.speed
             });
 
         }
