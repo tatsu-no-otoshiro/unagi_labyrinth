@@ -1,3 +1,5 @@
+import { CONFIG } from "./config.js";
+
 export class Eel {
 
     constructor(game) {
@@ -9,8 +11,8 @@ export class Eel {
 
         this.angle = 0;
 
-        this.speed = 2.5;
-        this.radius = 8;
+        this.speed = CONFIG.EEL_SPEED;
+        this.radius = CONFIG.EEL_RADIUS;
 
     }
 
