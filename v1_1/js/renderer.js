@@ -16,9 +16,22 @@ export class Renderer {
         const maze = this.game.maze;
         const eel = this.game.eel;
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // ----------------------------
+        // 背景
+        // ----------------------------
 
+        ctx.fillStyle = CONFIG.COLORS.BACKGROUND;
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+        // ----------------------------
         // 壁
+        // ----------------------------
+
         ctx.fillStyle = CONFIG.COLORS.WALL;
 
         for (const wall of maze.walls) {
@@ -32,7 +45,10 @@ export class Renderer {
 
         }
 
+        // ----------------------------
         // ゴール
+        // ----------------------------
+
         ctx.fillStyle = CONFIG.COLORS.GOAL;
 
         ctx.beginPath();
@@ -47,37 +63,59 @@ export class Renderer {
 
         ctx.fill();
 
-        // ウナギ 胴体
-        for (const body of eel.body) {
+        // ----------------------------
+        // ウナギの胴体
+        // ----------------------------
 
-            ctx.save();
+        if (eel.body.length > 0) {
 
-            ctx.translate(body.x, body.y);
-
-            ctx.fillStyle = CONFIG.COLORS.EEL;
+            ctx.strokeStyle = CONFIG.COLORS.EEL;
+            ctx.lineWidth = CONFIG.BODY_RADIUS * 2;
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
 
             ctx.beginPath();
 
-            ctx.arc(
-                0,
-                0,
-                CONFIG.BODY_RADIUS,
-                0,
-                Math.PI * 2
+            // しっぽ
+            ctx.moveTo(
+                eel.body[eel.body.length - 1].x,
+                eel.body[eel.body.length - 1].y
             );
 
-            ctx.fill();
+            // 胴体
+            for (let i = eel.body.length - 2; i >= 0; i--) {
 
-            ctx.restore();
+                ctx.lineTo(
+                    eel.body[i].x,
+                    eel.body[i].y
+                );
+
+            }
+
+            // 頭の付け根
+            ctx.lineTo(
+                eel.x,
+                eel.y
+            );
+
+            ctx.stroke();
 
         }
 
-        // ウナギ 頭
+        // ----------------------------
+        // 頭
+        // ----------------------------
+
         ctx.save();
 
-        ctx.translate(eel.x, eel.y);
+        ctx.translate(
+            eel.x,
+            eel.y
+        );
 
-        ctx.rotate(eel.angle);
+        ctx.rotate(
+            eel.angle
+        );
 
         ctx.fillStyle = CONFIG.COLORS.EEL;
 
