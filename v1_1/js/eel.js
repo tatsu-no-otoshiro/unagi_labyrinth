@@ -14,6 +14,7 @@ export class Eel {
         this.speed = CONFIG.EEL_SPEED;
         this.radius = CONFIG.EEL_RADIUS;
 
+        // 互換性維持（今回は使用しない）
         this.history = [];
 
         this.body = [];
@@ -33,10 +34,14 @@ export class Eel {
 
         this.body = [];
 
+        // 頭の後ろへ一定間隔で並べる
+        const spacing =
+            CONFIG.BODY_DELAY * this.speed;
+
         for (let i = 0; i < CONFIG.BODY_COUNT; i++) {
 
             this.body.push({
-                x: this.x,
+                x: this.x - spacing * (i + 1),
                 y: this.y
             });
 
@@ -53,55 +58,58 @@ export class Eel {
 
         const distance = Math.hypot(dx, dy);
 
-        if (distance <= 1) {
-            return;
-        }
+        if (distance > 1) {
 
-        this.angle = Math.atan2(dy, dx);
+            this.angle = Math.atan2(dy, dx);
 
-        const oldX = this.x;
+            const oldX = this.x;
 
-        this.x += dx / distance * this.speed;
+            this.x += dx / distance * this.speed;
 
-        if (this.hitWall()) {
-            this.x = oldX;
-        }
+            if (this.hitWall()) {
+                this.x = oldX;
+            }
 
-        const oldY = this.y;
+            const oldY = this.y;
 
-        this.y += dy / distance * this.speed;
+            this.y += dy / distance * this.speed;
 
-        if (this.hitWall()) {
-            this.y = oldY;
-        }
-
-        this.history.unshift({
-            x: this.x,
-            y: this.y
-        });
-
-        for (let i = 0; i < this.body.length; i++) {
-
-            const index =
-                (i + 1) * CONFIG.BODY_DELAY;
-
-            if (this.history.length > index) {
-
-                this.body[i].x =
-                    this.history[index].x;
-
-                this.body[i].y =
-                    this.history[index].y;
-
+            if (this.hitWall()) {
+                this.y = oldY;
             }
 
         }
 
-        const maxHistory =
-            (CONFIG.BODY_COUNT + 1) * CONFIG.BODY_DELAY;
+        // ---------- 胴体追従 ----------
+        const spacing =
+            CONFIG.BODY_DELAY * this.speed;
 
-        if (this.history.length > maxHistory) {
-            this.history.pop();
+        let leader = {
+            x: this.x,
+            y: this.y
+        };
+
+        for (const part of this.body) {
+
+            const vx = part.x - leader.x;
+            const vy = part.y - leader.y;
+
+            const d = Math.hypot(vx, vy);
+
+            if (d > spacing) {
+
+                const ratio = spacing / d;
+
+                part.x =
+                    leader.x + vx * ratio;
+
+                part.y =
+                    leader.y + vy * ratio;
+
+            }
+
+            leader = part;
+
         }
 
     }
