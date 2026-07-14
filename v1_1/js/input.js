@@ -15,8 +15,10 @@ export class Input {
         // マウス
         canvas.addEventListener("mousemove", (event) => {
 
-            this.target.x = event.clientX;
-            this.target.y = event.clientY;
+            this.updateTarget(
+                event.clientX,
+                event.clientY
+            );
 
         });
 
@@ -25,17 +27,28 @@ export class Input {
 
             event.preventDefault();
 
-            this.target.x = event.touches[0].clientX;
-            this.target.y = event.touches[0].clientY;
+            this.updateTarget(
+                event.touches[0].clientX,
+                event.touches[0].clientY
+            );
 
         }, { passive: false });
 
     }
 
+    updateTarget(x, y) {
+
+        this.target.x = x;
+        this.target.y = y;
+
+    }
+
     reset() {
 
-        this.target.x = this.game.eel.x;
-        this.target.y = this.game.eel.y;
+        this.updateTarget(
+            this.game.eel.x,
+            this.game.eel.y
+        );
 
     }
 
