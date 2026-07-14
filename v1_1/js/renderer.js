@@ -16,10 +16,7 @@ export class Renderer {
         const maze = this.game.maze;
         const eel = this.game.eel;
 
-        // ----------------------------
         // 背景
-        // ----------------------------
-
         ctx.fillStyle = CONFIG.COLORS.BACKGROUND;
         ctx.fillRect(
             0,
@@ -28,10 +25,7 @@ export class Renderer {
             canvas.height
         );
 
-        // ----------------------------
         // 壁
-        // ----------------------------
-
         ctx.fillStyle = CONFIG.COLORS.WALL;
 
         for (const wall of maze.walls) {
@@ -45,10 +39,7 @@ export class Renderer {
 
         }
 
-        // ----------------------------
         // ゴール
-        // ----------------------------
-
         ctx.fillStyle = CONFIG.COLORS.GOAL;
 
         ctx.beginPath();
@@ -63,12 +54,13 @@ export class Renderer {
 
         ctx.fill();
 
-        // ----------------------------
-        // ウナギの胴体
-        // ----------------------------
+        // --------------------
+        // 胴体
+        // --------------------
 
         if (eel.body.length > 0) {
 
+            // 一本線
             ctx.strokeStyle = CONFIG.COLORS.EEL;
             ctx.lineWidth = CONFIG.BODY_RADIUS * 2;
             ctx.lineCap = "round";
@@ -76,13 +68,11 @@ export class Renderer {
 
             ctx.beginPath();
 
-            // しっぽ
             ctx.moveTo(
                 eel.body[eel.body.length - 1].x,
                 eel.body[eel.body.length - 1].y
             );
 
-            // 胴体
             for (let i = eel.body.length - 2; i >= 0; i--) {
 
                 ctx.lineTo(
@@ -92,7 +82,6 @@ export class Renderer {
 
             }
 
-            // 頭の付け根
             ctx.lineTo(
                 eel.x,
                 eel.y
@@ -100,11 +89,30 @@ export class Renderer {
 
             ctx.stroke();
 
+            // 節を重ねて線を滑らかに見せる
+            ctx.fillStyle = CONFIG.COLORS.EEL;
+
+            for (const part of eel.body) {
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    part.x,
+                    part.y,
+                    CONFIG.BODY_RADIUS,
+                    0,
+                    Math.PI * 2
+                );
+
+                ctx.fill();
+
+            }
+
         }
 
-        // ----------------------------
+        // --------------------
         // 頭
-        // ----------------------------
+        // --------------------
 
         ctx.save();
 
