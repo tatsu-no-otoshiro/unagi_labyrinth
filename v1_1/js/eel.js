@@ -90,7 +90,7 @@ export class Eel {
 
         // 頭の後端座標
         const headLength =
-            this.game.maze.tileSize * 0.36;
+            this.game.maze.tileSize * 0.55;
 
         this.headBackX =
             this.x -
