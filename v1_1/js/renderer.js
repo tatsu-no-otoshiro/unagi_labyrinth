@@ -68,10 +68,28 @@ export class Renderer {
 
             const drawPoints = [];
 
-            // 頭
+            // 頭の中心（現在の描画位置）
+            const headOffset = maze.tileSize * 0.18;
+
+            const headCenterX =
+                eel.x - Math.cos(eel.angle) * headOffset;
+
+            const headCenterY =
+                eel.y - Math.sin(eel.angle) * headOffset;
+
+            // 首（頭の後端）
+            const neckOffset = maze.tileSize * 0.38;
+
+            const neckX =
+                eel.x - Math.cos(eel.angle) * neckOffset;
+
+            const neckY =
+                eel.y - Math.sin(eel.angle) * neckOffset;
+
+            // 一本線は首から開始する
             drawPoints.push({
-                x: eel.x,
-                y: eel.y
+                x: neckX,
+                y: neckY
             });
 
             // 胴体
