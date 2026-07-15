@@ -11,6 +11,9 @@ export class Eel {
 
         this.angle = 0;
 
+        this.headBackX = 0;
+        this.headBackY = 0;
+
         this.speed = CONFIG.EEL_SPEED;
         this.radius = CONFIG.EEL_RADIUS;
 
@@ -29,6 +32,11 @@ export class Eel {
         this.y = start.y;
 
         this.angle = 0;
+
+        const headLength = 0;
+
+        this.headBackX = this.x - headLength;
+        this.headBackY = this.y;
 
         this.history = [];
 
@@ -79,6 +87,18 @@ export class Eel {
             }
 
         }
+
+        // 頭の後端座標
+        const headLength =
+            this.game.maze.tileSize * 0.36;
+
+        this.headBackX =
+            this.x -
+            Math.cos(this.angle) * headLength;
+
+        this.headBackY =
+            this.y -
+            Math.sin(this.angle) * headLength;
 
         // ---------- 胴体追従 ----------
         const spacing =
