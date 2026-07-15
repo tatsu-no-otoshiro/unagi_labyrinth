@@ -6,6 +6,9 @@ export class Renderer {
 
         this.game = game;
 
+        // 波アニメーション用
+        this.waveTime = 0;
+
     }
 
     draw() {
@@ -16,8 +19,12 @@ export class Renderer {
         const maze = this.game.maze;
         const eel = this.game.eel;
 
+        // 時間更新
+        this.waveTime += 0.12;
+
         // 背景
         ctx.fillStyle = CONFIG.COLORS.BACKGROUND;
+
         ctx.fillRect(
             0,
             0,
@@ -54,11 +61,86 @@ export class Renderer {
 
         ctx.fill();
 
-        // --------------------
-        // 胴体
-        // --------------------
+        // ==========================
+        // 波打ち胴体座標を生成
+        // ==========================
 
-        if (eel.body.length > 0) {
+        const bodyPoints = [];
+
+        for (let i = 0; i < eel.body.length; i++) {
+
+            const part = eel.body[i];
+
+            let next;
+
+            if (i === 0) {
+
+                next = {
+                    x: eel.x,
+                    y: eel.y
+                };
+
+            } else {
+
+                next = eel.body[i - 1];
+
+            }
+
+            const dx = next.x - part.x;
+            const dy = next.y - part.y;
+
+            const len = Math.hypot(dx, dy);
+
+            if (len < 0.001) {
+
+                bodyPoints.push({
+                    x: part.x,
+                    y: part.y
+                });
+
+                continue;
+
+            }
+
+            // 接線
+            const tx = dx / len;
+            const ty = dy / len;
+
+            // 法線
+            const nx = -ty;
+            const ny = tx;
+
+            // 頭へ近いほど少し小さく、
+            // 尻尾へ向かうほど自然に揺れる
+            const t = i / eel.body.length;
+
+            const amplitude =
+                2 +
+                Math.sin(t * Math.PI) * 3;
+
+            const phase =
+                this.waveTime
+                - i * 0.65;
+
+            const offset =
+                Math.sin(phase) * amplitude;
+
+            bodyPoints.push({
+
+                x: part.x + nx * offset,
+                y: part.y + ny * offset
+
+            });
+
+        }
+
+        }
+
+        // ==========================
+        // 胴体描画
+        // ==========================
+
+        if (bodyPoints.length > 0) {
 
             // 一本線
             ctx.strokeStyle = CONFIG.COLORS.EEL;
@@ -68,16 +150,17 @@ export class Renderer {
 
             ctx.beginPath();
 
+            // 尻尾から頭へ描く
             ctx.moveTo(
-                eel.body[eel.body.length - 1].x,
-                eel.body[eel.body.length - 1].y
+                bodyPoints[bodyPoints.length - 1].x,
+                bodyPoints[bodyPoints.length - 1].y
             );
 
-            for (let i = eel.body.length - 2; i >= 0; i--) {
+            for (let i = bodyPoints.length - 2; i >= 0; i--) {
 
                 ctx.lineTo(
-                    eel.body[i].x,
-                    eel.body[i].y
+                    bodyPoints[i].x,
+                    bodyPoints[i].y
                 );
 
             }
@@ -89,10 +172,10 @@ export class Renderer {
 
             ctx.stroke();
 
-            // 節を重ねて線を滑らかに見せる
+            // 節を重ねて滑らかに見せる
             ctx.fillStyle = CONFIG.COLORS.EEL;
 
-            for (const part of eel.body) {
+            for (const part of bodyPoints) {
 
                 ctx.beginPath();
 
@@ -110,9 +193,9 @@ export class Renderer {
 
         }
 
-        // --------------------
+        // ==========================
         // 頭
-        // --------------------
+        // ==========================
 
         ctx.save();
 
@@ -127,6 +210,7 @@ export class Renderer {
 
         ctx.fillStyle = CONFIG.COLORS.EEL;
 
+        // 少しふっくらした頭
         ctx.beginPath();
 
         ctx.ellipse(
