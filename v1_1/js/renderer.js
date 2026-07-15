@@ -144,14 +144,23 @@ export class Renderer {
             // 節
             ctx.fillStyle = CONFIG.COLORS.EEL;
 
+            const bodyCount = drawPoints.length - 1;
+
             for (let i = 1; i < drawPoints.length; i++) {
+
+                // 頭側=0 → 尻尾側=1
+                const t = (i - 1) / Math.max(bodyCount - 1, 1);
+
+                // 頭側はそのまま、尻尾へ向かって細くする
+                const radius =
+                    CONFIG.BODY_RADIUS * (1.0 - 0.45 * t);
 
                 ctx.beginPath();
 
                 ctx.arc(
                     drawPoints[i].x,
                     drawPoints[i].y,
-                    CONFIG.BODY_RADIUS,
+                    radius,
                     0,
                     Math.PI * 2
                 );
