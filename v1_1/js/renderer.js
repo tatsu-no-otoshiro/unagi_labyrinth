@@ -185,6 +185,9 @@ export class Renderer {
         const headCenterY =
             eel.y - Math.sin(eel.angle) * headOffset;
 
+        const headCenterX = (eel.x + eel.head.x) * 0.5;
+        const headCenterY = (eel.y + eel.head.y) * 0.5;
+
         ctx.translate(
             headCenterX,
             headCenterY
