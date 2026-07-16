@@ -205,15 +205,25 @@ export class Renderer {
 
         ctx.beginPath();
 
+        const headWidth =
+            CONFIG.BODY_RADIUS * 2.5;
+
+        const headHeight =
+            CONFIG.BODY_RADIUS * 1.25;
+
+        ctx.beginPath();
+
         ctx.ellipse(
             0,
             0,
-            maze.tileSize * 0.45,
-            maze.tileSize * 0.18,
+            headWidth,
+            headHeight,
             0,
             0,
             Math.PI * 2
         );
+
+        ctx.fill();
 
         ctx.fill();
 
