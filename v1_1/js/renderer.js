@@ -225,8 +225,6 @@ export class Renderer {
 
         ctx.fill();
 
-        ctx.fill();
-
         ctx.restore();
 
     }
