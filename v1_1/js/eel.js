@@ -14,6 +14,11 @@ export class Eel {
         this.headBackX = 0;
         this.headBackY = 0;
 
+        this.head = {
+            x: 0,
+            y: 0
+        };
+
         this.speed = CONFIG.EEL_SPEED;
         this.radius = CONFIG.EEL_RADIUS;
 
@@ -37,6 +42,9 @@ export class Eel {
 
         this.headBackX = this.x - headLength;
         this.headBackY = this.y;
+
+        this.head.x = this.headBackX;
+        this.head.y = this.headBackY;
 
         this.history = [];
 
