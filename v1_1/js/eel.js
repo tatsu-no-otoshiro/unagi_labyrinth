@@ -108,19 +108,21 @@ export class Eel {
             this.y -
             Math.sin(this.angle) * headLength;
 
-        // Head節は現在は headBack と同じ位置
-        this.head.x = this.headBackX;
-        this.head.y = this.headBackY;
+        // Head節を頭の後端へ滑らかに追従させる
+        const headFollow = 0.35;
+
+        this.head.x +=
+            (this.headBackX - this.head.x) * headFollow;
+
+        this.head.y +=
+            (this.headBackY - this.head.y) * headFollow;
 
         // ---------- 胴体追従 ----------
         const spacing =
             CONFIG.BODY_DELAY * this.speed;
 
         // body[0] は鼻先ではなく頭の後端を追従する
-        let leader = {
-            x: this.headBackX,
-            y: this.headBackY
-        };
+        let leader = this.head;
 
         for (const part of this.body) {
 
