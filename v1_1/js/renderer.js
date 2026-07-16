@@ -136,7 +136,8 @@ export class Renderer {
                 drawPoints[drawPoints.length - 1].y
             );
 
-            for (let i = drawPoints.length - 2; i >= 0; i--) {
+            // index0 は nose なので描かない
+            for (let i = drawPoints.length - 2; i >= 1; i--) {
 
                 ctx.lineTo(
                     drawPoints[i].x,
