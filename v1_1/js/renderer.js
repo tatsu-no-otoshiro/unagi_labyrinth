@@ -174,43 +174,6 @@ export class Renderer {
 
                 ctx.stroke();
 
-		// 一番最後だけ尾先を伸ばす
-		if (i === drawPoints.length - 1) {
-
-		    const tail = drawPoints[i];
-    		    const next = drawPoints[i - 1];
-
-   		    const dx = tail.x - next.x;
-  		    const dy = tail.y - next.y;
-
-  		    const len = Math.hypot(dx, dy);
-
-  	  	    if (len > 0.001) {
-
-        		const extend =
-            		    CONFIG.BODY_RADIUS * 1.2;
-
-        		ctx.beginPath();
-
-        		ctx.moveTo(
-            		    tail.x,
-            		    tail.y
-        		);
-
-        		ctx.lineTo(
-            		    tail.x + dx / len * extend,
-            		    tail.y + dy / len * extend
-        		);
-
-        		ctx.lineWidth =
-            		    CONFIG.BODY_RADIUS * 0.35;
-
-        		ctx.stroke();
-
-    		    }
-
-		}
-
             }
 
             // 節
