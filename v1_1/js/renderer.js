@@ -176,7 +176,6 @@ export class Renderer {
 
             }
 
-	    /*
             // 節
             ctx.fillStyle = CONFIG.COLORS.EEL;
 
@@ -197,7 +196,6 @@ export class Renderer {
     		ctx.fill();
 
 	    }
-	    /*
 
         }
 
