@@ -137,9 +137,20 @@ export class Renderer {
                 const t = 1 - (i - 1) / (drawPoints.length - 2);
 
                 // 首は少し細く、中央が最大、尻尾へ向かって細く
-                const widthScale =
+                let widthScale =
                     0.92 +
                     Math.sin(t * Math.PI) * 0.33;
+
+                // 最後の25%は尾柄として急激に細くする
+                if (t > 0.75) {
+
+                    const tail =
+                        (t - 0.75) / 0.25;
+
+                    widthScale *=
+                        1.0 - tail * 0.55;
+
+                }
 
                 ctx.lineWidth =
                     CONFIG.BODY_RADIUS * 2 * widthScale;
@@ -162,6 +173,43 @@ export class Renderer {
                 );
 
                 ctx.stroke();
+
+		// 一番最後だけ尾先を伸ばす
+		if (i === drawPoints.length - 1) {
+
+		    const tail = drawPoints[i];
+    		    const next = drawPoints[i - 1];
+
+   		    const dx = tail.x - next.x;
+  		    const dy = tail.y - next.y;
+
+  		    const len = Math.hypot(dx, dy);
+
+  	  	    if (len > 0.001) {
+
+        		const extend =
+            		    CONFIG.BODY_RADIUS * 1.2;
+
+        		ctx.beginPath();
+
+        		ctx.moveTo(
+            		    tail.x,
+            		    tail.y
+        		);
+
+        		ctx.lineTo(
+            		    tail.x + dx / len * extend,
+            		    tail.y + dy / len * extend
+        		);
+
+        		ctx.lineWidth =
+            		    CONFIG.BODY_RADIUS * 0.35;
+
+        		ctx.stroke();
+
+    		    }
+
+		}
 
             }
 
