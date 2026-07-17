@@ -133,13 +133,22 @@ export class Renderer {
                 const p0 = drawPoints[i];
                 const p1 = drawPoints[i - 1];
 
-                // 頭=0、尻尾=1 の割合
+                // 尻尾=0、頭=1 の割合
                 const t = 1 - (i - 1) / (drawPoints.length - 2);
 
                 // 首は少し細く、中央が最大、尻尾へ向かって細く
-                const widthScale =
-                    0.92 +
-                    Math.sin(t * Math.PI) * 0.33;
+                let widthScale =
+    		    0.92 +
+    		    Math.sin(t * Math.PI) * 0.33;
+
+		if (t < 0.25) {
+
+    		    const k = t / 0.25;
+
+    		    widthScale *=
+        		0.6 + 0.4 * k;
+
+		}
 
                 ctx.lineWidth =
                     CONFIG.BODY_RADIUS * 2 * widthScale;
