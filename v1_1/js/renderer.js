@@ -216,21 +216,23 @@ export class Renderer {
             // 節
             ctx.fillStyle = CONFIG.COLORS.EEL;
 
-            for (let i = 1; i < drawPoints.length; i++) {
+            for (let i = 2; i < drawPoints.length - 1; i++) {
 
-                ctx.beginPath();
+    		const part = drawPoints[i];
 
-                ctx.arc(
-                    drawPoints[i].x,
-                    drawPoints[i].y,
-                    CONFIG.BODY_RADIUS,
-                    0,
-                    Math.PI * 2
-                );
+    		ctx.beginPath();
 
-                ctx.fill();
+    		ctx.arc(
+        	    part.x,
+        	    part.y,
+        	    CONFIG.BODY_RADIUS * 0.9,
+        	    0,
+        	    Math.PI * 2
+    		);
 
-            }
+    		ctx.fill();
+
+	    }
 
         }
 
