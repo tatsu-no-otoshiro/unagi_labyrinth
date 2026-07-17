@@ -170,12 +170,22 @@ export class Renderer {
 
             for (let i = 1; i < drawPoints.length; i++) {
 
+		const tailStart = drawPoints.length - 4;
+
+		let radius = CONFIG.BODY_RADIUS;
+
+		if (i >= tailStart) {
+
+    		    radius -= (i - tailStart + 1) * 1.0;
+
+		}
+
                 ctx.beginPath();
 
                 ctx.arc(
                     drawPoints[i].x,
                     drawPoints[i].y,
-                    CONFIG.BODY_RADIUS,
+                    radius,
                     0,
                     Math.PI * 2
                 );
