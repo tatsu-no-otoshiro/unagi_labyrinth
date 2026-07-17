@@ -185,25 +185,7 @@ export class Renderer {
 
 		if (i >= tailStart) {
 
-    		    switch (i - tailStart) {
-
-        		case 0:
-            		    radius = 6.5;
-            		    break;
-
-        		case 1:
-            		    radius = 6.0;
-            		    break;
-
-        		case 2:
-            		    radius = 5.5;
-            		    break;
-
-        		case 3:
-            		    radius = 5.0;
-            		    break;
-
-    		    }
+    		    radius -= (i - tailStart + 1) * 1.0;
 
 		}
 
