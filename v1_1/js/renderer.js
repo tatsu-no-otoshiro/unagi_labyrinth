@@ -137,20 +137,9 @@ export class Renderer {
                 const t = 1 - (i - 1) / (drawPoints.length - 2);
 
                 // 首は少し細く、中央が最大、尻尾へ向かって細く
-                let widthScale =
+                const widthScale =
                     0.92 +
                     Math.sin(t * Math.PI) * 0.33;
-
-                // 最後の25%は尾柄として急激に細くする
-                if (t > 0.75) {
-
-                    const tail =
-                        (t - 0.75) / 0.25;
-
-                    widthScale *=
-                        1.0 - tail * 0.55;
-
-                }
 
                 ctx.lineWidth =
                     CONFIG.BODY_RADIUS * 2 * widthScale;
@@ -179,23 +168,21 @@ export class Renderer {
             // 節
             ctx.fillStyle = CONFIG.COLORS.EEL;
 
-            for (let i = 2; i < drawPoints.length - 1; i++) {
+            for (let i = 1; i < drawPoints.length; i++) {
 
-    		const part = drawPoints[i];
+                ctx.beginPath();
 
-    		ctx.beginPath();
+                ctx.arc(
+                    drawPoints[i].x,
+                    drawPoints[i].y,
+                    CONFIG.BODY_RADIUS,
+                    0,
+                    Math.PI * 2
+                );
 
-    		ctx.arc(
-        	    part.x,
-        	    part.y,
-        	    CONFIG.BODY_RADIUS * 0.9,
-        	    0,
-        	    Math.PI * 2
-    		);
+                ctx.fill();
 
-    		ctx.fill();
-
-	    }
+            }
 
         }
 
