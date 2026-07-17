@@ -188,7 +188,7 @@ export class Renderer {
             // 節
             ctx.fillStyle = CONFIG.COLORS.EEL;
 
-            for (let i = 1; i < drawPoints.length; i++) {
+            for (let i = 2; i < drawPoints.length; i++) {
 
                 ctx.beginPath();
 
