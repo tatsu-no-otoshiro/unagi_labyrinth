@@ -193,7 +193,7 @@ export class Renderer {
             // 節
             ctx.fillStyle = CONFIG.COLORS.EEL;
 
-            for (let i = 1; i < drawPoints.length; i++) {
+            for (let i = 1; i < renderPoints.length; i++) {
 
 		const tailStart = drawPoints.length - 4;
 
@@ -208,12 +208,12 @@ export class Renderer {
                 ctx.beginPath();
 
                 ctx.arc(
-                    drawPoints[i].x,
-                    drawPoints[i].y,
-                    radius,
-                    0,
-                    Math.PI * 2
-                );
+    		    renderPoints[i].x,
+    		    renderPoints[i].y,
+    		    radius,
+    		    0,
+    		    Math.PI * 2
+		);
 
                 ctx.fill();
 
