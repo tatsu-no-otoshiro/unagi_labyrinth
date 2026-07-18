@@ -123,22 +123,6 @@ export class Renderer {
 
             }
 
-	    // 描画専用の点列（まだ drawPoints のコピー）
-            const renderPoints = [...drawPoints];
-
-	    // 尾の最後の3区間に補間点を追加
-	    for (let i = renderPoints.length - 2; i >= renderPoints.length - 4; i--) {
-
-    		const p0 = renderPoints[i];
-    		const p1 = renderPoints[i + 1];
-
-    		renderPoints.splice(i + 1, 0, {
-        	    x: (p0.x + p1.x) * 0.5,
-        	    y: (p0.y + p1.y) * 0.5
-    		});
-
-	    }
-
             // 一本線
             ctx.strokeStyle = CONFIG.COLORS.EEL;
             ctx.lineCap = "round";
@@ -193,7 +177,7 @@ export class Renderer {
             // 節
             ctx.fillStyle = CONFIG.COLORS.EEL;
 
-            for (let i = 1; i < renderPoints.length; i++) {
+            for (let i = 1; i < drawPoints.length; i++) {
 
 		const tailStart = drawPoints.length - 4;
 
@@ -208,12 +192,12 @@ export class Renderer {
                 ctx.beginPath();
 
                 ctx.arc(
-    		    renderPoints[i].x,
-    		    renderPoints[i].y,
-    		    radius,
-    		    0,
-    		    Math.PI * 2
-		);
+                    drawPoints[i].x,
+                    drawPoints[i].y,
+                    radius,
+                    0,
+                    Math.PI * 2
+                );
 
                 ctx.fill();
 
