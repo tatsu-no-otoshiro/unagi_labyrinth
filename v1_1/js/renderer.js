@@ -150,8 +150,11 @@ export class Renderer {
 		const p1 = renderPoints[i - 1];
 
                 // 尻尾=0、頭=1 の割合
-                const t =
-    		    1 - (i - 1) / (renderPoints.length - 2);
+                // renderPoints → drawPoints 相当の位置へ補正
+		const bodyIndex = (i - 1) * (drawPoints.length - 2) / (renderPoints.length - 2);
+
+		const t =
+    		    1 - bodyIndex / (drawPoints.length - 2);
 
                 // 首は少し細く、中央が最大、尻尾へ向かって細く
                 let widthScale =
