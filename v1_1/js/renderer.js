@@ -1,253 +1,174 @@
 import { CONFIG } from "./config.js";
 
-export class Renderer {
+export class Eel {
 
     constructor(game) {
 
         this.game = game;
 
+        this.x = 0;
+        this.y = 0;
+
+        this.angle = 0;
+
+        this.headBackX = 0;
+        this.headBackY = 0;
+
+        this.head = {
+            x: 0,
+            y: 0
+        };
+
+        this.speed = CONFIG.EEL_SPEED;
+        this.radius = CONFIG.EEL_RADIUS;
+
+        // 互換性維持（今回は使用しない）
+        this.history = [];
+
+        this.body = [];
+
     }
 
-    draw() {
+    reset() {
 
-        const ctx = this.game.ctx;
-        const canvas = this.game.canvas;
+        const start = this.game.maze.start;
+
+        this.x = start.x;
+        this.y = start.y;
+
+        this.angle = 0;
+
+        const headLength = 0;
+
+        this.headBackX = this.x - headLength;
+        this.headBackY = this.y;
+
+        this.head.x = this.headBackX;
+        this.head.y = this.headBackY;
+
+        this.history = [];
+
+        this.body = [];
+
+        // 頭の後ろへ一定間隔で並べる
+        const spacing =
+            CONFIG.BODY_DELAY * this.speed;
+
+        for (let i = 0; i < CONFIG.BODY_COUNT; i++) {
+
+            this.body.push({
+                x: this.x - spacing * (i + 1),
+                y: this.y
+            });
+
+        }
+
+    }
+
+    update() {
+
+        const target = this.game.input.target;
+
+        const dx = target.x - this.x;
+        const dy = target.y - this.y;
+
+        const distance = Math.hypot(dx, dy);
+
+        if (distance > 1) {
+
+            this.angle = Math.atan2(dy, dx);
+
+            const oldX = this.x;
+
+            this.x += dx / distance * this.speed;
+
+            if (this.hitWall()) {
+                this.x = oldX;
+            }
+
+            const oldY = this.y;
+
+            this.y += dy / distance * this.speed;
+
+            if (this.hitWall()) {
+                this.y = oldY;
+            }
+
+        }
+
+        // 頭の後端座標
+        const headLength =
+            this.game.maze.tileSize * 0.55;
+
+        this.headBackX =
+            this.x -
+            Math.cos(this.angle) * headLength;
+
+        this.headBackY =
+            this.y -
+            Math.sin(this.angle) * headLength;
+
+        // Head節を頭の後端へ滑らかに追従させる
+        const headFollow = 0.35;
+
+        this.head.x +=
+            (this.headBackX - this.head.x) * headFollow;
+
+        this.head.y +=
+            (this.headBackY - this.head.y) * headFollow;
+
+        // ---------- 胴体追従 ----------
+        const spacing =
+            CONFIG.BODY_DELAY * this.speed;
+
+        // body[0] は鼻先ではなく頭の後端を追従する
+        let leader = this.head;
+
+        for (let i = 0; i < this.body.length; i++) {
+
+    	    const part = this.body[i];
+
+            const vx = part.x - leader.x;
+            const vy = part.y - leader.y;
+
+            const d = Math.hypot(vx, vy);
+
+            if (d > spacing) {
+
+                const ratio = spacing / d;
+
+                part.x =
+                    leader.x + vx * ratio;
+
+                part.y =
+                    leader.y + vy * ratio;
+
+            }
+
+            leader = part;
+
+        }
+
+    }
+
+    hitWall() {
 
         const maze = this.game.maze;
-        const eel = this.game.eel;
-
-        // 背景
-        ctx.fillStyle = CONFIG.COLORS.BACKGROUND;
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-        // 壁
-        ctx.fillStyle = CONFIG.COLORS.WALL;
 
         for (const wall of maze.walls) {
 
-            ctx.fillRect(
-                wall.x,
-                wall.y,
-                maze.tileSize,
-                maze.tileSize
-            );
-
-        }
-
-        // ゴール
-        ctx.fillStyle = CONFIG.COLORS.GOAL;
-
-        ctx.beginPath();
-
-        ctx.arc(
-            maze.goal.x,
-            maze.goal.y,
-            maze.goal.radius,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
-
-        // --------------------
-        // 胴体
-        // --------------------
-
-        if (eel.body.length > 0) {
-
-            // 波アニメーション
-            if (this.waveTime === undefined) {
-                this.waveTime = 0;
-            }
-            this.waveTime += 0.08;
-
-            const drawPoints = [];
-
-            // 中心線の先頭（鼻先）
-            drawPoints.push({
-                x: eel.x,
-                y: eel.y
-            });
-
-            // 頭の節
-            drawPoints.push({
-                x: eel.head.x,
-                y: eel.head.y
-            });
-
-            // 胴体
-            for (let i = 0; i < eel.body.length; i++) {
-
-                const part = eel.body[i];
-
-                // 前の節（0番は頭）
-                const prev =
-                    (i === 0)
-                        ? eel.head
-                        : eel.body[i - 1];
-
-                let dx = prev.x - part.x;
-                let dy = prev.y - part.y;
-
-                const len = Math.hypot(dx, dy);
-
-                let nx = 0;
-                let ny = 0;
-
-                if (len > 0.001) {
-                    nx = -dy / len;
-                    ny = dx / len;
-                }
-
-                // 中央付近だけ大きく揺らす
-                const t = (i + 1) / (eel.body.length + 1);
-
-                const amplitude =
-                    Math.sin(t * Math.PI) * 3;
-
-                const offset =
-                    Math.sin(this.waveTime - i * 0.55)
-                    * amplitude;
-
-                drawPoints.push({
-
-                    x: part.x + nx * offset,
-                    y: part.y + ny * offset
-
-                });
-
-            }
-
-            // 一本線
-            ctx.strokeStyle = CONFIG.COLORS.EEL;
-            ctx.lineCap = "round";
-            ctx.lineJoin = "round";
-
-            for (let i = drawPoints.length - 1; i > 1; i--) {
-
-                const p0 = drawPoints[i];
-                const p1 = drawPoints[i - 1];
-
-                // 尻尾=0、頭=1 の割合
-                const t = 1 - (i - 1) / (drawPoints.length - 2);
-
-                // 首は少し細く、中央が最大、尻尾へ向かって細く
-                let widthScale =
-    		    0.92 +
-    		    Math.sin(t * Math.PI) * 0.33;
-
-		if (t < 0.25) {
-
-    		    const k = t / 0.25;
-
-    		    widthScale *=
-        		0.6 + 0.4 * k;
-
-		}
-
-                ctx.lineWidth =
-                    CONFIG.BODY_RADIUS * 2 * widthScale;
-
-                ctx.beginPath();
-
-                ctx.moveTo(
-                    p0.x,
-                    p0.y
-                );
-
-                const mx = (p0.x + p1.x) * 0.5;
-                const my = (p0.y + p1.y) * 0.5;
-
-                ctx.quadraticCurveTo(
-                    p0.x,
-                    p0.y,
-                    mx,
-                    my
-                );
-
-                ctx.stroke();
-
-            }
-
-            // 節
-            ctx.fillStyle = CONFIG.COLORS.EEL;
-
-            for (let i = 1; i < drawPoints.length; i++) {
-
-		const tailStart = drawPoints.length - 4;
-
-		let radius = CONFIG.BODY_RADIUS;
-
-		if (i >= tailStart) {
-
-    		    radius -= (i - tailStart + 1) * 1.0;
-
-		}
-
-                ctx.beginPath();
-
-                ctx.arc(
-                    drawPoints[i].x,
-                    drawPoints[i].y,
-                    radius,
-                    0,
-                    Math.PI * 2
-                );
-
-                ctx.fill();
-
+            if (
+                this.x + this.radius > wall.x &&
+                this.x - this.radius < wall.x + maze.tileSize &&
+                this.y + this.radius > wall.y &&
+                this.y - this.radius < wall.y + maze.tileSize
+            ) {
+                return true;
             }
 
         }
 
-        // --------------------
-        // 頭
-        // --------------------
-
-        ctx.save();
-
-        const headCenterX = (eel.x + eel.head.x) * 0.5;
-        const headCenterY = (eel.y + eel.head.y) * 0.5;
-
-        ctx.translate(
-            headCenterX,
-            headCenterY
-        );
-
-        ctx.rotate(
-            eel.angle
-        );
-
-        ctx.fillStyle = CONFIG.COLORS.EEL;
-
-        ctx.beginPath();
-
-        const headWidth =
-            CONFIG.BODY_RADIUS * 2.5;
-
-        const headHeight =
-            CONFIG.BODY_RADIUS * 1.25;
-
-        ctx.beginPath();
-
-        ctx.ellipse(
-            0,
-            0,
-            headWidth,
-            headHeight,
-            0,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
-
-        ctx.restore();
+        return false;
 
     }
 
