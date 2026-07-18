@@ -132,7 +132,7 @@ export class Eel {
 
 	    // 最後の3節だけ少し間隔を縮める
 	    if (i >= this.body.length - 3) {
-    		partSpacing *= 0.9;
+    		partSpacing *= 0.8;
 	    }
 
             const vx = part.x - leader.x;
