@@ -126,6 +126,19 @@ export class Renderer {
 	    // 描画専用の点列（まだ drawPoints のコピー）
             const renderPoints = [...drawPoints];
 
+	    // 尾の最後の3区間に補間点を追加
+	    for (let i = renderPoints.length - 2; i >= renderPoints.length - 4; i--) {
+
+    		const p0 = renderPoints[i];
+    		const p1 = renderPoints[i + 1];
+
+    		renderPoints.splice(i + 1, 0, {
+        	    x: (p0.x + p1.x) * 0.5,
+        	    y: (p0.y + p1.y) * 0.5
+    		});
+
+	    }
+
             // 一本線
             ctx.strokeStyle = CONFIG.COLORS.EEL;
             ctx.lineCap = "round";
