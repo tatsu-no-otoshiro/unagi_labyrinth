@@ -203,6 +203,10 @@ export class Renderer {
 
             }
 
+	    // 尾端
+	    const tail = drawPoints[drawPoints.length - 1];
+	    const prev = drawPoints[drawPoints.length - 2];
+
         }
 
         // --------------------
