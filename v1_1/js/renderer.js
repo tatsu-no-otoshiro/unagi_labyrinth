@@ -212,6 +212,30 @@ export class Renderer {
 
 	    const len = Math.hypot(dx, dy);
 
+	    if (len > 0.001) {
+
+    		const ux = dx / len;
+    	        const uy = dy / len;
+
+    	        ctx.strokeStyle = CONFIG.COLORS.EEL;
+    	        ctx.lineWidth = 2;
+
+    	        ctx.beginPath();
+
+    	        ctx.moveTo(
+        	    tail.x,
+        	    tail.y
+    	        );
+
+    	        ctx.lineTo(
+        	    tail.x + ux * 10,
+        	    tail.y + uy * 10
+    	        );
+
+    	        ctx.stroke();
+
+	    }
+
         }
 
         // --------------------
