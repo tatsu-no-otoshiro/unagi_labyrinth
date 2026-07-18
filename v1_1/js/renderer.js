@@ -217,22 +217,40 @@ export class Renderer {
     		const ux = dx / len;
     	        const uy = dy / len;
 
-    	        ctx.strokeStyle = CONFIG.COLORS.EEL;
-    	        ctx.lineWidth = 2;
+    	        ctx.fillStyle = CONFIG.COLORS.EEL;
 
-    	        ctx.beginPath();
+		// 方向ベクトルに対して垂直方向
+		const px = -uy;
+		const py = ux;
 
-    	        ctx.moveTo(
-        	    tail.x,
-        	    tail.y
-    	        );
+		// 尾先の長さ
+		const tipLength = 10;
 
-    	        ctx.lineTo(
-        	    tail.x + ux * 10,
-        	    tail.y + uy * 10
-    	        );
+		// 尾先の幅
+		const tipWidth = 3;
 
-    	        ctx.stroke();
+		ctx.beginPath();
+
+		// 左根元
+		ctx.moveTo(
+    		    tail.x + px * tipWidth,
+    		    tail.y + py * tipWidth
+		);
+
+		// 尖った先端
+		ctx.lineTo(
+    		    tail.x + ux * tipLength,
+    		    tail.y + uy * tipLength
+		);
+
+		// 右根元
+		ctx.lineTo(
+    		    tail.x - px * tipWidth,
+    		    tail.y - py * tipWidth
+		);
+
+		ctx.closePath();
+		ctx.fill();
 
 	    }
 
