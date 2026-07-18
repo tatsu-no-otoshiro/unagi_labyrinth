@@ -123,6 +123,9 @@ export class Renderer {
 
             }
 
+	    // 描画専用の点列（まだ drawPoints のコピー）
+            const renderPoints = [...drawPoints];
+
             // 一本線
             ctx.strokeStyle = CONFIG.COLORS.EEL;
             ctx.lineCap = "round";
