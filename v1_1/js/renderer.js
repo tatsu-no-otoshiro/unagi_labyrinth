@@ -224,10 +224,10 @@ export class Renderer {
 		const py = ux;
 
 		// 尾先の長さ
-		const tipLength = 14;
+		const tipLength = 16;
 
 		// 尾先の幅
-		const tipWidth = 4.5;
+		const tipWidth = 4;
 
 		ctx.beginPath();
 
