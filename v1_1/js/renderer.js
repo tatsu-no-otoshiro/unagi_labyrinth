@@ -229,12 +229,15 @@ export class Renderer {
 		// 尾先の幅
 		const tipWidth = 3;
 
+		// 尾の円周まで進める距離
+		const radius = CONFIG.BODY_RADIUS;
+
 		ctx.beginPath();
 
 		// 左根元
 		ctx.moveTo(
-    		    tail.x + px * tipWidth,
-    		    tail.y + py * tipWidth
+    		    tail.x + px * tipWidth + ux * radius,
+    		    tail.y + py * tipWidth + uy * radius
 		);
 
 		// 尖った先端
@@ -245,8 +248,8 @@ export class Renderer {
 
 		// 右根元
 		ctx.lineTo(
-    		    tail.x - px * tipWidth,
-    		    tail.y - py * tipWidth
+    		    tail.x - px * tipWidth + ux * radius,
+    		    tail.y - py * tipWidth + uy * radius
 		);
 
 		ctx.closePath();
