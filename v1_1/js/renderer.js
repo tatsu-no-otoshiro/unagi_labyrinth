@@ -224,7 +224,7 @@ export class Renderer {
 		const py = ux;
 
 		// 尾先の長さ
-		const tipLength = 16;
+		const tipLength = 20;
 
 		// 尾先の幅
 		const tipWidth = 3.5;
