@@ -124,23 +124,14 @@ export class Eel {
         // body[0] は鼻先ではなく頭の後端を追従する
         let leader = this.head;
 
-        for (let i = 0; i < this.body.length; i++) {
-
-    	    const part = this.body[i];
-
-	    let partSpacing = spacing;
-
-	    // 最後の3節だけ少し間隔を縮める
-	    if (i >= this.body.length - 3) {
-    		partSpacing *= 0.8;
-	    }
+        for (const part of this.body) {
 
             const vx = part.x - leader.x;
             const vy = part.y - leader.y;
 
             const d = Math.hypot(vx, vy);
 
-            if (d > partSpacing) {
+            if (d > spacing) {
 
                 const ratio = spacing / d;
 
