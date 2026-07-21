@@ -132,6 +132,8 @@ export class Renderer {
 	    // --------------------
 
             // 一本線
+	    this.drawBodyLine(ctx, drawPoints);
+
             ctx.strokeStyle = CONFIG.COLORS.EEL;
             ctx.lineCap = "round";
             ctx.lineJoin = "round";
@@ -259,6 +261,10 @@ export class Renderer {
         ctx.fill();
 
         ctx.restore();
+
+    }
+
+    drawBodyLine(ctx, drawPoints) {
 
     }
 
