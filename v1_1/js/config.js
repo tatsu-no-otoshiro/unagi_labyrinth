@@ -18,6 +18,9 @@ export const CONFIG = {
     TAIL_TIP_LENGTH: 16,
     TAIL_TIP_WIDTH: 3,
 
+    TAIL_CURVE_FORWARD: 8,
+    TAIL_CURVE_WIDTH: 4,
+
     BODY_DELAY: 4,
 
     // ゴール
