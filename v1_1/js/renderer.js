@@ -66,6 +66,10 @@ export class Renderer {
             }
             this.waveTime += 0.08;
 
+	    // --------------------
+	    // 描画用データ生成
+	    // --------------------
+
             const drawPoints = [];
 
             // 中心線の先頭（鼻先）
@@ -122,6 +126,10 @@ export class Renderer {
                 });
 
             }
+
+	    // --------------------
+	    // 描画
+	    // --------------------
 
             // 一本線
             ctx.strokeStyle = CONFIG.COLORS.EEL;
@@ -203,54 +211,11 @@ export class Renderer {
 
             }
 
-	    // 尾端
-	    const tail = drawPoints[drawPoints.length - 1];
-	    const prev = drawPoints[drawPoints.length - 2];
+	    // --------------------
+	    // 尾端（Tail Tip）
+	    // --------------------
 
-	    const dx = tail.x - prev.x;
-	    const dy = tail.y - prev.y;
-
-	    const len = Math.hypot(dx, dy);
-
-	    if (len > 0.001) {
-
-    		const ux = dx / len;
-    	        const uy = dy / len;
-
-    	        ctx.fillStyle = CONFIG.COLORS.EEL;
-
-		// 方向ベクトルに対して垂直方向
-		const px = -uy;
-		const py = ux;
-
-		// 尾先の長さ
-		const tipLength = 16;
-
-		// 尾先の幅
-		const tipWidth = 3;
-
-		ctx.beginPath();
-
-		// 左根元
-		ctx.moveTo(
-    		    tail.x + px * tipWidth,
-    		    tail.y + py * tipWidth
-		);
-
-		// 尖った先端
-		ctx.lineTo(
-    		    tail.x + ux * tipLength,
-    		    tail.y + uy * tipLength
-		);
-
-		// 右根元
-		ctx.lineTo(
-    		    tail.x - px * tipWidth,
-    		    tail.y - py * tipWidth
-		);
-
-		ctx.closePath();
-		ctx.fill();
+	    this.drawTailTip(ctx, drawPoints);
 
 	    }
 
@@ -299,6 +264,60 @@ export class Renderer {
         ctx.fill();
 
         ctx.restore();
+
+    }
+
+    drawTailTip(ctx, drawPoints) {
+
+        const tail = drawPoints[drawPoints.length - 1];
+        const prev = drawPoints[drawPoints.length - 2];
+
+        const dx = tail.x - prev.x;
+        const dy = tail.y - prev.y;
+
+        const len = Math.hypot(dx, dy);
+
+        if (len > 0.001) {
+
+            const ux = dx / len;
+            const uy = dy / len;
+
+            ctx.fillStyle = CONFIG.COLORS.EEL;
+
+            // 方向ベクトルに対して垂直方向
+            const px = -uy;
+            const py = ux;
+
+            // 尾先の長さ
+            const tipLength = 16;
+
+            // 尾先の幅
+            const tipWidth = 3;
+
+            ctx.beginPath();
+
+            // 左根元
+            ctx.moveTo(
+                tail.x + px * tipWidth,
+                tail.y + py * tipWidth
+            );
+
+            // 尖った先端
+            ctx.lineTo(
+                tail.x + ux * tipLength,
+                tail.y + uy * tipLength
+            );
+
+            // 右根元
+            ctx.lineTo(
+                tail.x - px * tipWidth,
+                tail.y - py * tipWidth
+            );
+
+            ctx.closePath();
+            ctx.fill();
+
+        }
 
     }
 
