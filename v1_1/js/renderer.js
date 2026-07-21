@@ -134,56 +134,6 @@ export class Renderer {
             // 一本線
 	    this.drawBodyLine(ctx, drawPoints);
 
-            ctx.strokeStyle = CONFIG.COLORS.EEL;
-            ctx.lineCap = "round";
-            ctx.lineJoin = "round";
-
-            for (let i = drawPoints.length - 1; i > 1; i--) {
-
-                const p0 = drawPoints[i];
-                const p1 = drawPoints[i - 1];
-
-                // 尻尾=0、頭=1 の割合
-                const t = 1 - (i - 1) / (drawPoints.length - 2);
-
-                // 首は少し細く、中央が最大、尻尾へ向かって細く
-                let widthScale =
-    		    0.92 +
-    		    Math.sin(t * Math.PI) * 0.33;
-
-		if (t < 0.25) {
-
-    		    const k = t / 0.25;
-
-    		    widthScale *=
-        		0.6 + 0.4 * k;
-
-		}
-
-                ctx.lineWidth =
-                    CONFIG.BODY_RADIUS * 2 * widthScale;
-
-                ctx.beginPath();
-
-                ctx.moveTo(
-                    p0.x,
-                    p0.y
-                );
-
-                const mx = (p0.x + p1.x) * 0.5;
-                const my = (p0.y + p1.y) * 0.5;
-
-                ctx.quadraticCurveTo(
-                    p0.x,
-                    p0.y,
-                    mx,
-                    my
-                );
-
-                ctx.stroke();
-
-            }
-
             // 節
             ctx.fillStyle = CONFIG.COLORS.EEL;
 
@@ -265,6 +215,56 @@ export class Renderer {
     }
 
     drawBodyLine(ctx, drawPoints) {
+
+        ctx.strokeStyle = CONFIG.COLORS.EEL;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+
+        for (let i = drawPoints.length - 1; i > 1; i--) {
+
+            const p0 = drawPoints[i];
+            const p1 = drawPoints[i - 1];
+
+            // 尻尾=0、頭=1 の割合
+            const t = 1 - (i - 1) / (drawPoints.length - 2);
+
+            // 首は少し細く、中央が最大、尻尾へ向かって細く
+            let widthScale =
+                0.92 +
+                Math.sin(t * Math.PI) * 0.33;
+
+            if (t < 0.25) {
+
+                const k = t / 0.25;
+
+                widthScale *=
+                    0.6 + 0.4 * k;
+
+            }
+
+            ctx.lineWidth =
+                CONFIG.BODY_RADIUS * 2 * widthScale;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                p0.x,
+                p0.y
+            );
+
+            const mx = (p0.x + p1.x) * 0.5;
+            const my = (p0.y + p1.y) * 0.5;
+
+            ctx.quadraticCurveTo(
+                p0.x,
+                p0.y,
+                mx,
+                my
+            );
+
+            ctx.stroke();
+
+        }
 
     }
 
