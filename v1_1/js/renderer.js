@@ -148,6 +148,11 @@ export class Renderer {
 
     }
 
+    /**
+     * ウナギの胴体ラインを描画する
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {Array} drawPoints
+     */
     drawBodyLine(ctx, drawPoints) {
 
         ctx.strokeStyle = CONFIG.COLORS.EEL;
@@ -202,6 +207,11 @@ export class Renderer {
 
     }
 
+    /**
+     * ウナギの節を描画する
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {Array} drawPoints
+     */
     drawBodySegments(ctx, drawPoints) {
 
 	ctx.fillStyle = CONFIG.COLORS.EEL;
@@ -293,6 +303,11 @@ export class Renderer {
 
     }
 
+    /**
+     * ウナギの頭を描画する
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {Array} drawPoints
+     */
     drawHead(ctx, eel) {
 	ctx.save();
 
