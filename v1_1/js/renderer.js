@@ -142,49 +142,9 @@ export class Renderer {
 
         }
 
-        // --------------------
+        
         // 頭
-        // --------------------
-
-        ctx.save();
-
-        const headCenterX = (eel.x + eel.head.x) * 0.5;
-        const headCenterY = (eel.y + eel.head.y) * 0.5;
-
-        ctx.translate(
-            headCenterX,
-            headCenterY
-        );
-
-        ctx.rotate(
-            eel.angle
-        );
-
-        ctx.fillStyle = CONFIG.COLORS.EEL;
-
-        ctx.beginPath();
-
-        const headWidth =
-            CONFIG.BODY_RADIUS * 2.5;
-
-        const headHeight =
-            CONFIG.BODY_RADIUS * 1.25;
-
-        ctx.beginPath();
-
-        ctx.ellipse(
-            0,
-            0,
-            headWidth,
-            headHeight,
-            0,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
-
-        ctx.restore();
+        this.drawHead(ctx, eel);
 
     }
 
@@ -331,6 +291,48 @@ export class Renderer {
 
         }
 
+    }
+
+    drawHead(ctx, eel) {
+	ctx.save();
+
+        const headCenterX = (eel.x + eel.head.x) * 0.5;
+        const headCenterY = (eel.y + eel.head.y) * 0.5;
+
+        ctx.translate(
+            headCenterX,
+            headCenterY
+        );
+
+        ctx.rotate(
+            eel.angle
+        );
+
+        ctx.fillStyle = CONFIG.COLORS.EEL;
+
+        ctx.beginPath();
+
+        const headWidth =
+            CONFIG.BODY_RADIUS * 2.5;
+
+        const headHeight =
+            CONFIG.BODY_RADIUS * 1.25;
+
+        ctx.beginPath();
+
+        ctx.ellipse(
+            0,
+            0,
+            headWidth,
+            headHeight,
+            0,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+        ctx.restore();
     }
 
 }
