@@ -276,6 +276,10 @@ export class Renderer {
             // 尾先の幅
             const tipWidth  = CONFIG.TAIL_TIP_WIDTH;
 
+	    // 曲線の制御
+	    const curveForward = CONFIG.TAIL_CURVE_FORWARD;
+	    const curveWidth   = CONFIG.TAIL_CURVE_WIDTH;
+
 	   /*
 	    // --------------------
 	    // 三角形版
@@ -319,16 +323,16 @@ export class Renderer {
 
 	    // 左側の曲線
 	    ctx.quadraticCurveTo(
-    		tail.x + ux * 8 + px * 4,
-    		tail.y + uy * 8 + py * 4,
+    		tail.x + ux * curveForward + px * curveWidth,
+    		tail.y + uy * curveForward + py * curveWidth,
     		tail.x + ux * tipLength,
     		tail.y + uy * tipLength
 	    );
 
 	    // 右側の曲線
 	    ctx.quadraticCurveTo(
-    		tail.x + ux * 8 - px * 4,
-    		tail.y + uy * 8 - py * 4,
+    		tail.x + ux * curveForward - px * curveWidth,
+    		tail.y + uy * curveForward - py * curveWidth,
     		tail.x - px * tipWidth,
     		tail.y - py * tipWidth
 	    );
