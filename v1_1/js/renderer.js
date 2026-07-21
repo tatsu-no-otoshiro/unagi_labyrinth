@@ -211,13 +211,10 @@ export class Renderer {
 
             }
 
-	    // --------------------
-	    // 尾端（Tail Tip）
-	    // --------------------
-
+	    // 尾端
 	    this.drawTailTip(ctx, drawPoints);
 
-	    }
+        }
 
         // --------------------
         // 頭
@@ -287,10 +284,10 @@ export class Renderer {
             const py = ux;
 
             // 尾先の長さ
-            const tipLength = 16;
+            const tipLength = CONFIG.TAIL_TIP_LENGTH;
 
             // 尾先の幅
-            const tipWidth = 3;
+            const tipWidth  = CONFIG.TAIL_TIP_WIDTH;
 
             ctx.beginPath();
 
