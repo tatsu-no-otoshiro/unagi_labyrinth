@@ -14,6 +14,10 @@ export const CONFIG = {
     // ニョロニョロ
     BODY_COUNT: 16,
     BODY_RADIUS: 7,
+
+    TAIL_TIP_LENGTH: 16,
+    TAIL_TIP_WIDTH: 3,
+
     BODY_DELAY: 4,
 
     // ゴール
