@@ -276,6 +276,11 @@ export class Renderer {
             // 尾先の幅
             const tipWidth  = CONFIG.TAIL_TIP_WIDTH;
 
+	   /*
+	    // --------------------
+	    // 三角形版
+	    // --------------------
+
             ctx.beginPath();
 
             // 左根元
@@ -298,6 +303,38 @@ export class Renderer {
 
             ctx.closePath();
             ctx.fill();
+	   */
+
+	    // --------------------
+	    // 涙滴形版（Bezier）
+	    // --------------------
+
+	    ctx.beginPath();
+
+	    // 左根元
+	    ctx.moveTo(
+    	        tail.x + px * tipWidth,
+    	        tail.y + py * tipWidth
+	    );
+
+	    // 左側の曲線
+	    ctx.quadraticCurveTo(
+    		tail.x + ux * 8 + px * 4,
+    		tail.y + uy * 8 + py * 4,
+    		tail.x + ux * tipLength,
+    		tail.y + uy * tipLength
+	    );
+
+	    // 右側の曲線
+	    ctx.quadraticCurveTo(
+    		tail.x + ux * 8 - px * 4,
+    		tail.y + uy * 8 - py * 4,
+    		tail.x - px * tipWidth,
+    		tail.y - py * tipWidth
+	    );
+
+	    ctx.closePath();
+	    ctx.fill();
 
         }
 
