@@ -256,8 +256,8 @@ export class Renderer {
 	const prev1 = drawPoints[drawPoints.length - 2];
 	const prev2 = drawPoints[drawPoints.length - 3];
 
-        const dx = tail.x - prev.x;
-        const dy = tail.y - prev.y;
+        const dx = tail.x - prev1.x;
+	const dy = tail.y - prev1.y;
 
         const len = Math.hypot(dx, dy);
 
