@@ -264,8 +264,19 @@ export class Renderer {
 	const dy2 = prev1.y - prev2.y;
 
 	// 現在の向きを70%、一つ前を30%採用
-	const dx = dx1 * 0.7 + dx2 * 0.3;
-	const dy = dy1 * 0.7 + dy2 * 0.3;
+	const currentWeight =
+    	    CONFIG.TAIL_DIRECTION_CURRENT;
+
+	const previousWeight =
+    	    CONFIG.TAIL_DIRECTION_PREVIOUS;
+
+	const dx =
+    	    dx1 * currentWeight +
+    	    dx2 * previousWeight;
+
+	const dy =
+    	    dy1 * currentWeight +
+    	    dy2 * previousWeight;
 
         const len = Math.hypot(dx, dy);
 
