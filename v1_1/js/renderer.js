@@ -256,8 +256,16 @@ export class Renderer {
 	const prev1 = drawPoints[drawPoints.length - 2];
 	const prev2 = drawPoints[drawPoints.length - 3];
 
-        const dx = tail.x - prev1.x;
-	const dy = tail.y - prev1.y;
+        // 最後の2本のベクトル
+	const dx1 = tail.x - prev1.x;
+	const dy1 = tail.y - prev1.y;
+
+	const dx2 = prev1.x - prev2.x;
+	const dy2 = prev1.y - prev2.y;
+
+	// 現在の向きを70%、一つ前を30%採用
+	const dx = dx1 * 0.7 + dx2 * 0.3;
+	const dy = dy1 * 0.7 + dy2 * 0.3;
 
         const len = Math.hypot(dx, dy);
 
